@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "blog",
     "blog_api",
     "corsheaders",
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -136,6 +137,8 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
+
+AUTH_USER_MODEL = "users.NewUser"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
