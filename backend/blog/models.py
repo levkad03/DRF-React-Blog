@@ -23,7 +23,7 @@ class Post(models.Model):
     excerpt = models.TextField(null=True)
     content = models.TextField()
     slug = models.SlugField(max_length=250, unique_for_date="published")
-    published = models.TimeField(default=timezone.now)
+    published = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="blog_posts"
     )
