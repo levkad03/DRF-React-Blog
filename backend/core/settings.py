@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "blog_api",
     "corsheaders",
     "users",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 MIDDLEWARE = [
