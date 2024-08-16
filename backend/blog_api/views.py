@@ -1,9 +1,13 @@
-from rest_framework import generics
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, viewsets
 from rest_framework.permissions import (
     SAFE_METHODS,
     BasePermission,
+    IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
+from rest_framework.response import Response
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from blog.models import Post
 
@@ -20,13 +24,15 @@ class PostUserWritePermission(BasePermission):
         return obj.author == request.user
 
 
-class PostList(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    queryset = Post.postobjects.all()
-    serializer_class = PostSerializer
-
-
-class PostDetail(generics.RetrieveUpdateDestroyAPIView, PostUserWritePermission):
+class PostList(viewsets.ModelViewSet):
+    # authentication_classes = [JWTAuthentication]
     permission_classes = [PostUserWritePermission]
-    queryset = Post.postobjects.all()
     serializer_class = PostSerializer
+    queryset = Post.postobjects.all()
+
+    def get_object(self, queryset=None, **kwargs):
+        item = self.kwargs.get("pk")
+        return get_object_or_404(Post, slug=item)
+
+    def get_queryset(self):
+        return Post.objects.all()
