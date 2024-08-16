@@ -8,6 +8,7 @@ import Footer from './components/Footer.jsx';
 import Register from './components/Register.jsx';
 import Login from './components/Login.jsx';
 import Logout from './components/Logout.jsx';
+import Single from './components/Single.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/post/:slug" element={<Single />} />
       </Routes>
       <Footer />
     </React.StrictMode>

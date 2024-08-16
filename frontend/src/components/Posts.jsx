@@ -5,8 +5,11 @@ import { CardMedia } from '@mui/material';
 import { Grid } from '@mui/material';
 import { Typography } from '@mui/material';
 import { Container } from '@mui/material';
+import { Link } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 const Posts = ({ posts }) => {
+  const theme = useTheme();
   if (!posts || posts.length === 0) return <p>Can not find any posts, sorry</p>;
 
   return (
@@ -17,11 +20,17 @@ const Posts = ({ posts }) => {
             // Enterprise card is full width at sm breakpoint
             <Grid item key={post.id} xs={12} md={4}>
               <Card>
-                <CardMedia
-                  sx={{ paddingTop: '56.25%' }} // 16:9 aspect ratio
-                  image="https://picsum.photos/600"
-                  title="Image title"
-                />
+                <Link
+                  color="textPrimary"
+                  href={'post/' + post.slug}
+                  sx={{ margin: theme.spacing(1, 1.5) }}
+                >
+                  <CardMedia
+                    sx={{ paddingTop: '56.25%' }} // 16:9 aspect ratio
+                    image="https://picsum.photos/600"
+                    title="Image title"
+                  />
+                </Link>
                 <CardContent>
                   <Typography
                     gutterBottom

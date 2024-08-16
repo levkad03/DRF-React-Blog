@@ -13,7 +13,7 @@ import { Typography } from '@mui/material';
 import { Container } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-export default function SignUp() {
+export default function Register() {
   const navigate = useNavigate();
   const initialFormData = Object.freeze({
     username: '',

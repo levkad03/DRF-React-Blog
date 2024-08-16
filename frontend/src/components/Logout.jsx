@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axiosInstance from '../Axios';
 import { useNavigate } from 'react-router-dom';
 
-export default function SignOut() {
+export default function Logout() {
   const navigate = useNavigate();
   useEffect(() => {
     const response = axiosInstance.post(`user/logout/blacklist/`, {
