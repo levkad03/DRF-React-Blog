@@ -25,6 +25,7 @@ class PostUserWritePermission(BasePermission):
 
 
 class PostList(generics.ListAPIView):
+    # authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.postobjects.all()

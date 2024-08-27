@@ -5,14 +5,26 @@ const baseURL = 'http://127.0.0.1:8000/api/';
 const axiosInstance = axios.create({
   baseURL: baseURL,
   timeout: 5000,
-  headers: {
-    Authorization: localStorage.getItem('access_token')
-      ? 'JWT ' + localStorage.getItem('access_token')
-      : null,
-    'Content-Type': 'application/json',
-    accept: 'application/json',
-  },
+  // headers: {
+  //   Authorization: localStorage.getItem('access_token')
+  //     ? `Bearer ${localStorage.getItem('access_token')}`
+  //     : null,
+  //   'Content-Type': 'application/json',
+  //   accept: 'application/json',
+  // },
 });
+
+axiosInstance.interceptors.request.use(
+  config => {
+    if (!config.headers.Authorization) {
+      config.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`;
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  },
+);
 
 // Добавляем интерсептор для обработки ответов
 axiosInstance.interceptors.response.use(

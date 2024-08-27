@@ -3,6 +3,8 @@ import './App.css';
 import Posts from './components/Posts';
 import PostLoadingComponent from './components/PostLoading';
 
+import axiosInstance from './Axios';
+
 function App() {
   const PostLoading = PostLoadingComponent(Posts);
   const [appState, setAppState] = useState({
@@ -12,13 +14,17 @@ function App() {
 
   useEffect(() => {
     setAppState({ loading: true });
-    const apiUrl = `http://127.0.0.1:8000/api/`;
-    fetch(apiUrl)
-      .then(data => data.json())
-      .then(posts => {
-        setAppState({ loading: false, posts: posts });
+
+    axiosInstance
+      .get('/')
+      .then(response => {
+        setAppState({ loading: false, posts: response.data });
+      })
+      .catch(error => {
+        setAppState({ loading: false });
+        console.error('There was an error fetching the posts!', error);
       });
-  }, [setAppState]);
+  }, []);
   return (
     <div className="App">
       <h1>Latest Posts</h1>
