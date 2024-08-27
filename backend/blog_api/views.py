@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import generics, viewsets
+from rest_framework import filters, generics, viewsets
 from rest_framework.permissions import (
     SAFE_METHODS,
     BasePermission,
@@ -47,3 +47,10 @@ class PostDetail(generics.RetrieveAPIView, PostUserWritePermission):
         slug = self.kwargs.get("slug", None)
         print(slug)
         return Post.objects.filter(slug=slug)
+
+
+class PostListDetailfilter(generics.ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["^slug"]
