@@ -12,7 +12,7 @@ const Single = () => {
   const [data, setData] = useState({ posts: [] });
 
   useEffect(() => {
-    axiosInstance.get(slug).then(res => {
+    axiosInstance.get(`posts/${slug}`).then(res => {
       setData({ posts: res.data });
       console.log(res.data);
     });

@@ -24,15 +24,26 @@ class PostUserWritePermission(BasePermission):
         return obj.author == request.user
 
 
-class PostList(viewsets.ModelViewSet):
-    # authentication_classes = [JWTAuthentication]
-    permission_classes = [PostUserWritePermission]
+class PostList(generics.ListAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.postobjects.all()
 
-    def get_object(self, queryset=None, **kwargs):
-        item = self.kwargs.get("pk")
-        return get_object_or_404(Post, slug=item)
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     return Post.objects.filter(author=user)
+
+
+class PostDetail(generics.RetrieveAPIView, PostUserWritePermission):
+    permission_classes = [PostUserWritePermission]
+    serializer_class = PostSerializer
+    lookup_field = "slug"
+
+    def get_object(self):
+        slug = self.kwargs.get("slug", None)
+        return get_object_or_404(Post, slug=slug)
 
     def get_queryset(self):
-        return Post.objects.all()
+        slug = self.kwargs.get("slug", None)
+        print(slug)
+        return Post.objects.filter(slug=slug)
