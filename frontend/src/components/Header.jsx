@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -7,9 +7,18 @@ import { useTheme } from '@mui/material/styles';
 import { Link } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { Button } from '@mui/material';
+import SearchBar from '@mkyy/mui-search-bar';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const theme = useTheme();
+  let navigate = useNavigate();
+  const [data, setData] = useState({ search: '' });
+
+  const goSearch = e => {
+    navigate({ pathname: '/search/', search: `?search=${data.search}` });
+    window.location.reload();
+  };
 
   return (
     <React.Fragment>
@@ -29,6 +38,11 @@ const Header = () => {
               BlogMeUp
             </Link>
           </Typography>
+          <SearchBar
+            value={data.search}
+            onChange={newValue => setData({ search: newValue })}
+            onSearch={() => goSearch(data.search)}
+          />
           <nav>
             <Link
               color="textPrimary"
