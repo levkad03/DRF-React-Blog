@@ -44,14 +44,37 @@ class PostDetail(generics.RetrieveAPIView, PostUserWritePermission):
         slug = self.kwargs.get("slug", None)
         return get_object_or_404(Post, slug=slug)
 
-    def get_queryset(self):
-        slug = self.kwargs.get("slug", None)
-        print(slug)
-        return Post.objects.filter(slug=slug)
-
 
 class PostListDetailfilter(generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^slug"]
+
+
+class CreatePost(generics.CreateAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+class AdminPostDetail(generics.RetrieveAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+class EditPost(generics.UpdateAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+class DeletePost(generics.RetrieveDestroyAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
