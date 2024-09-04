@@ -5,11 +5,11 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import App from './App.jsx';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
-import Register from './components/Register.jsx';
-import Login from './components/Login.jsx';
-import Logout from './components/Logout.jsx';
-import Single from './components/Single.jsx';
-import Search from './components/Search.jsx';
+import Register from './components/auth/Register.jsx';
+import Login from './components/auth/Login.jsx';
+import Logout from './components/auth/Logout.jsx';
+import Single from './components/posts/Single.jsx';
+import Search from './components/posts/Search.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>

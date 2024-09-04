@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axiosInstance from '../Axios';
+import axiosInstance from '../../Axios';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import { Button } from '@mui/material';
@@ -13,37 +13,37 @@ import { Typography } from '@mui/material';
 import { Container } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-export default function Login() {
+export default function Register() {
   const navigate = useNavigate();
   const initialFormData = Object.freeze({
+    username: '',
     email: '',
     password: '',
   });
   const [formData, updateFormData] = useState(initialFormData);
-
   const handleChange = e => {
     updateFormData({
       ...formData,
+      // Trimming any whitespace
       [e.target.name]: e.target.value.trim(),
     });
   };
   const handleSubmit = e => {
     e.preventDefault();
     console.log(formData);
-
     axiosInstance
-      .post(`token/`, {
+      .post(`user/register/`, {
         email: formData.email,
+        user_name: formData.username,
         password: formData.password,
       })
       .then(res => {
-        localStorage.setItem('access_token', res.data.access);
-        localStorage.setItem('refresh_token', res.data.refresh);
-        axiosInstance.defaults.headers['Authorization'] =
-          'Bearer ' + localStorage.getItem('access_token');
-        navigate('/');
+        navigate('/login');
+        console.log(res);
+        console.log(res.data);
       });
   };
+
   const theme = useTheme();
   return (
     <Container component="main" maxWidth="xs">
@@ -60,62 +60,74 @@ export default function Login() {
           sx={{ margin: theme.spacing(1), backgroundColor: theme.palette.secondary.main }}
         ></Avatar>
         <Typography component="h1" variant="h5">
-          Sign In
+          Sign Up
         </Typography>
         <form
           style={{
             width: '100%', // Fix IE 11 issue.
-            marginTop: theme.spacing(1),
+            marginTop: theme.spacing(3),
           }}
           noValidate
         >
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={handleChange}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={handleChange}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                label="I want to receive inspiration, marketing promotions and updates via email."
+              />
+            </Grid>
+          </Grid>
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
-            sx={{ margin: theme.spacing(3, 0, 2) }}
             onClick={handleSubmit}
+            sx={{ margin: theme.spacing(3, 0, 2) }}
           >
-            Sign In
+            Sign Up
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
+          <Grid container justify="flex-end">
             <Grid item>
               <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
+                Already have an account? Sign in
               </Link>
             </Grid>
           </Grid>
