@@ -11,6 +11,7 @@ import { Logout } from './components/auth';
 import { Single } from './components/posts';
 import { Search } from './components/posts';
 import Admin from './Admin.jsx';
+import { Create } from './components/admin';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/post/:slug" element={<Single />} />
         <Route path="/search" element={<Search />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/admin/create" element={<Create />} />
       </Routes>
       <Footer />
     </React.StrictMode>
