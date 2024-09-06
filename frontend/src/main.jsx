@@ -13,6 +13,7 @@ import { Search } from './components/posts';
 import Admin from './Admin.jsx';
 import { Create } from './components/admin';
 import { Edit } from './components/admin';
+import { Delete } from './components/admin';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>
@@ -28,6 +29,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin/create" element={<Create />} />
         <Route path="admin/edit/:id" element={<Edit />} />
+        <Route path="admin/delete/:id" element={<Delete />} />
       </Routes>
       <Footer />
     </React.StrictMode>
