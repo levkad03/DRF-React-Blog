@@ -10,6 +10,7 @@ class PostSerializer(serializers.ModelSerializer):
             "category",
             "id",
             "title",
+            "image",
             "author",
             "excerpt",
             "content",

@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import filters, generics, viewsets
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import (
     SAFE_METHODS,
     BasePermission,
@@ -7,6 +8,7 @@ from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
 )
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from blog.models import Post
@@ -45,18 +47,33 @@ class PostDetail(generics.RetrieveAPIView, PostUserWritePermission):
         return get_object_or_404(Post, slug=slug)
 
 
-class PostListDetailfilter(generics.ListAPIView):
+class PostListDetailfilter(APIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^slug"]
 
 
-class CreatePost(generics.CreateAPIView):
+# class CreatePost(generics.CreateAPIView):
+#     authentication_classes = [JWTAuthentication]
+#     permission_classes = [IsAuthenticated]
+#     queryset = Post.objects.all()
+#     serializer_class = PostSerializer
+
+
+class CreatePost(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request, format=None):
+        print(request.data)
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=200)
+        else:
+            return Response(serializer.errors, status=400)
 
 
 class AdminPostDetail(generics.RetrieveAPIView):
