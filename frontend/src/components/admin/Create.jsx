@@ -10,7 +10,6 @@ import { Typography } from '@mui/material';
 import { Container } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { IconButton } from '@mui/material';
-import { Input } from '@mui/material';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
 const Create = () => {
@@ -168,29 +167,18 @@ const Create = () => {
                 rows={4}
               />
             </Grid>
-            {/* <label htmlFor="icon-button-photo">
-              <Input
-                accept="image/*"
-                id="icon-button-photo"
-                type="file"
-                sx={{ display: 'none' }}
-                onChange={handleChange}
-              />
-              <IconButton color="primary" aria-label="upload picture" component="span">
-                <AddPhotoAlternateIcon />
-                Add Photo
-              </IconButton>
-            </label> */}
             <input
               accept="image/*"
               id="icon-button-photo"
               onChange={handleChange}
               name="image"
               type="file"
+              style={{ display: 'none' }}
             />
             <label htmlFor="icon-button-photo">
               <IconButton color="primary" component="span">
                 <AddPhotoAlternateIcon />
+                Add photo
               </IconButton>
             </label>
           </Grid>

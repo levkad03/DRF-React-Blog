@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@mui/material';
 import { CardContent } from '@mui/material';
 import { CardMedia } from '@mui/material';
-import { Grid } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import { Typography } from '@mui/material';
 import { Container } from '@mui/material';
 import { Link } from '@mui/material';
@@ -18,7 +18,7 @@ const Posts = ({ posts }) => {
         <Grid container spacing={5} alignItems="flex-end">
           {posts.map(post => (
             // Enterprise card is full width at sm breakpoint
-            <Grid item key={post.id} xs={12} md={4}>
+            <Grid key={post.id} size={{ xs: 12, md: 4 }}>
               <Card>
                 <Link
                   color="textPrimary"
