@@ -27,7 +27,7 @@ const Posts = ({ posts }) => {
                 >
                   <CardMedia
                     sx={{ paddingTop: '56.25%' }} // 16:9 aspect ratio
-                    image="https://picsum.photos/600"
+                    image={post.image}
                     title="Image title"
                   />
                 </Link>

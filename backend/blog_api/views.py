@@ -47,7 +47,7 @@ class PostDetail(generics.RetrieveAPIView, PostUserWritePermission):
         return get_object_or_404(Post, slug=slug)
 
 
-class PostListDetailfilter(APIView):
+class PostListDetailfilter(generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     filter_backends = [filters.SearchFilter]

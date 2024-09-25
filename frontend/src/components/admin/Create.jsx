@@ -9,7 +9,9 @@ import Grid from '@mui/material/Grid2';
 import { Typography } from '@mui/material';
 import { Container } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Css } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import { Input } from '@mui/material';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
 const Create = () => {
   const slugify = string => {
@@ -39,18 +41,25 @@ const Create = () => {
     excerpt: '',
     content: '',
   });
-  const [formData, updateFormData] = useState(initialFormData);
+  const [postData, updateFormData] = useState(initialFormData);
+  const [postImage, setPostImage] = useState(null);
 
   const handleChange = e => {
+    if ([e.target.name] == 'image') {
+      setPostImage({
+        image: e.target.files,
+      });
+      console.log(e.target.files);
+    }
     if ([e.target.name] == 'title') {
       updateFormData({
-        ...formData,
+        ...postData,
         [e.target.name]: e.target.value.trim(),
         ['slug']: slugify(e.target.value.trim()),
       });
     } else {
       updateFormData({
-        ...formData,
+        ...postData,
         [e.target.name]: e.target.value.trim(),
       });
     }
@@ -58,17 +67,27 @@ const Create = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    axiosInstance
-      .post(`admin/create/`, {
-        title: formData.title,
-        slug: formData.slug,
-        author: 1,
-        excerpt: formData.excerpt,
-        content: formData.content,
-      })
-      .then(res => {
-        navigate(`/admin/`);
-      });
+    let formData = new FormData();
+    formData.append('title', postData.title);
+    formData.append('slug', postData.slug);
+    formData.append('author', 1);
+    formData.append('excerpt', postData.excerpt);
+    formData.append('content', postData.content);
+    formData.append('image', postImage.image[0]);
+    axiosInstance.post(`admin/create/`, formData);
+    navigate(`/admin/`);
+    window.location.reload();
+    // axiosInstance
+    //   .post(`admin/create/`, {
+    //     title: formData.title,
+    //     slug: formData.slug,
+    //     author: 1,
+    //     excerpt: formData.excerpt,
+    //     content: formData.content,
+    //   })
+    //   .then(res => {
+    //     navigate(`/admin/`);
+    //   });
   };
 
   return (
@@ -131,7 +150,7 @@ const Create = () => {
                 label="slug"
                 name="slug"
                 autoComplete="slug"
-                value={formData.slug}
+                value={postData.slug}
                 onChange={handleChange}
               />
             </Grid>
@@ -149,6 +168,31 @@ const Create = () => {
                 rows={4}
               />
             </Grid>
+            {/* <label htmlFor="icon-button-photo">
+              <Input
+                accept="image/*"
+                id="icon-button-photo"
+                type="file"
+                sx={{ display: 'none' }}
+                onChange={handleChange}
+              />
+              <IconButton color="primary" aria-label="upload picture" component="span">
+                <AddPhotoAlternateIcon />
+                Add Photo
+              </IconButton>
+            </label> */}
+            <input
+              accept="image/*"
+              id="icon-button-photo"
+              onChange={handleChange}
+              name="image"
+              type="file"
+            />
+            <label htmlFor="icon-button-photo">
+              <IconButton color="primary" component="span">
+                <AddPhotoAlternateIcon />
+              </IconButton>
+            </label>
           </Grid>
           <Button
             type="submit"
