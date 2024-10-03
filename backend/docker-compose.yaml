@@ -12,6 +12,8 @@ services:
             - "5433:5432"
         networks:
             - custom
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
 
     pgadmin:
         container_name: pgadmin
@@ -29,3 +31,6 @@ services:
 networks:
     custom:
         driver: bridge
+
+volumes:
+    postgres_data:
