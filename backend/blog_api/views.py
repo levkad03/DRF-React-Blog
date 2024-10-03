@@ -54,13 +54,6 @@ class PostListDetailfilter(generics.ListAPIView):
     search_fields = ["^slug"]
 
 
-# class CreatePost(generics.CreateAPIView):
-#     authentication_classes = [JWTAuthentication]
-#     permission_classes = [IsAuthenticated]
-#     queryset = Post.objects.all()
-#     serializer_class = PostSerializer
-
-
 class CreatePost(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
