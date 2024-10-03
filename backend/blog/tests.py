@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 
+from users.models import NewUser
+
 from .models import Category, Post
 
 
@@ -8,16 +10,20 @@ class TestCreatePost(TestCase):
     @classmethod
     def setUpTestData(cls):
         test_category = Category.objects.create(name="django")
-        test_user1 = User.objects.create_user(
-            username="test_user1", password="123456789"
+        test_user1 = NewUser.objects.create_user(
+            email="testuser1@example.com",
+            user_name="test_user1",
+            first_name="Test",
+            password="123456789",
         )
+
         test_post = Post.objects.create(
             category_id=1,
             title="Post Title",
             excerpt="Post Excerpt",
             content="Post Content",
             slug="post-title",
-            author_id=1,
+            author_id=test_user1.id,
             status="published",
         )
 

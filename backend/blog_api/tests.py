@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
 from blog.models import Category, Post
+from users.models import NewUser
 
 
 class PostTests(APITestCase):
@@ -21,11 +22,19 @@ class PostTests(APITestCase):
         """
         self.test_category = Category.objects.create(name="django")
 
-        self.test_user1 = User.objects.create_superuser(
-            username="test_user1", password="123456789"
+        self.test_user1 = NewUser.objects.create_user(
+            email="testuser1@example.com",
+            user_name="testuser1",
+            first_name="Test",
+            password="123456789",
         )
         self.client.login(username="test_user1", password="123456789")
-        data = {"title": "new", "author": 1, "excerpt": "new", "content": "new"}
+        data = {
+            "title": "new",
+            "author": self.test_user1.id,
+            "excerpt": "new",
+            "content": "new",
+        }
         url = reverse("blog_api:listcreate")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -37,11 +46,17 @@ class PostTests(APITestCase):
     def test_post_update(self):
         client = APIClient()
         self.test_category = Category.objects.create(name="django")
-        self.testuser1 = User.objects.create_user(
-            username="test_user1", password="123456789"
+        self.testuser1 = NewUser.objects.create_user(
+            email="testuser1@example.com",
+            user_name="testuser1",
+            first_name="Test1",
+            password="123456789",
         )
-        self.testuser2 = User.objects.create_user(
-            username="test_user2", password="123456789"
+        self.testuser2 = NewUser.objects.create_user(
+            email="testuser2@example.com",
+            user_name="testuser2",
+            first_name="Test2",
+            password="123456789",
         )
         test_post = Post.objects.create(
             category_id=1,
@@ -49,7 +64,7 @@ class PostTests(APITestCase):
             excerpt="Post Excerpt",
             content="Post Content",
             slug="post-title",
-            author_id=1,
+            author_id=self.testuser1.id,
             status="published",
         )
 
