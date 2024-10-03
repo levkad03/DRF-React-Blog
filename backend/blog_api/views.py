@@ -32,10 +32,6 @@ class PostList(generics.ListAPIView):
     serializer_class = PostSerializer
     queryset = Post.postobjects.all()
 
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     return Post.objects.filter(author=user)
-
 
 class PostDetail(generics.RetrieveAPIView, PostUserWritePermission):
     permission_classes = [PostUserWritePermission]
