@@ -48,3 +48,27 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+
+class UpdateProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NewUser
+        fields = ["email", "user_name"]
+
+    def validate_email(self, value):
+        user = self.context["request"].user
+        if NewUser.objects.filter(email=value).exclude(id=user.id).exists():
+            raise serializers.ValidationError("Email is already in use")
+
+        if user.email == value:
+            raise serializers.ValidationError("Email is the same as the old one")
+        return value
+
+    def validate_user_name(self, value):
+        user = self.context["request"].user
+        if NewUser.objects.filter(user_name=value).exclude(id=user.id).exists():
+            raise serializers.ValidationError("Username is already in use")
+
+        if user.user_name == value:
+            raise serializers.ValidationError("Username is the same as the old one")
+        return value
