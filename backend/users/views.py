@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.generics import UpdateAPIView
+from rest_framework.generics import DestroyAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -44,6 +44,15 @@ class UpdateUserView(APIView):
                 {"message": "User data is updated"}, status=status.HTTP_200_OK
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteUserView(DestroyAPIView):
+    queryset = NewUser.objects.all()
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    def get_object(self):
+        return self.request.user
 
 
 class BlacklistTokenView(APIView):
