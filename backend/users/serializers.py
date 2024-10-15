@@ -15,16 +15,6 @@ class RegisterUserSerializer(serializers.ModelSerializer):
             "user_name": {"required": True, "min_length": 5},
         }
 
-    def validata_email(self, value):
-        if NewUser.objects.filter(email=value).exists():
-            raise serializers.ValidationError("Email already exists")
-        return value
-
-    def validate_user_name(self, value):
-        if NewUser.objects.filter(user_name=value).exists():
-            raise serializers.ValidationError("Username already exists")
-        return value
-
     def validate_password(self, value):
         if not re.search(r"[A-Z]", value):
             raise serializers.ValidationError(

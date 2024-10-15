@@ -1,6 +1,9 @@
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
 from django.test import TestCase
+from rest_framework.serializers import ValidationError
+
+from .models import NewUser
+from .serializers import RegisterUserSerializer, UpdateProfileSerializer
 
 
 class CustomAccountManagerTest(TestCase):
@@ -68,3 +71,73 @@ class CustomAccountManagerTest(TestCase):
                 password="superpassword123",
                 is_superuser=False,
             )
+
+
+class RegisterUserSerializerTest(TestCase):
+    def setUp(self):
+        self.valid_data = {
+            "email": "valid@example.com",
+            "user_name": "validuser",
+            "password": "Valid1234",
+        }
+        self.invalid_data_password = {
+            "email": "valid@example.com",
+            "user_name": "validuser",
+            "password": "invalid",
+        }
+        self.invalid_data_email = {
+            "email": "invalidemail",
+            "user_name": "validuser",
+            "password": "Valid1234",
+        }
+        NewUser.objects.create_user(
+            email="existinguser@example.com",
+            user_name="existinguser",
+            password="Existing123",
+            first_name="Existing",
+        )
+
+    def test_valid_data(self):
+        serializer = RegisterUserSerializer(data=self.valid_data)
+        self.assertTrue(serializer.is_valid())
+        user = serializer.save()
+        self.assertEqual(user.email, "valid@example.com")
+        self.assertTrue(user.check_password("Valid1234"))
+
+    def test_create_user_invalid_password(self):
+        data_no_uppercase = {
+            "email": "newuser@example.com",
+            "user_name": "newuser",
+            "password": "invalidpassword",
+        }
+        serializer = RegisterUserSerializer(data=data_no_uppercase)
+
+        with self.assertRaisesMessage(
+            ValidationError, "Password must contain at least one uppercase letter"
+        ):
+            serializer.is_valid(raise_exception=True)
+
+        data_no_lowercase = {
+            "email": "newuser@example.com",
+            "user_name": "newuser",
+            "password": "XXXXXXXXXXXXXXX",
+        }
+        serializer = RegisterUserSerializer(data=data_no_lowercase)
+
+        with self.assertRaisesMessage(
+            ValidationError, "Password must contain at least one lowercase letter"
+        ):
+            serializer.is_valid(raise_exception=True)
+
+        data_no_digits = {
+            "email": "newuser@example.com",
+            "user_name": "newuser",
+            "password": "No_digits",
+        }
+
+        serializer = RegisterUserSerializer(data=data_no_digits)
+
+        with self.assertRaisesMessage(
+            ValidationError, "Password must contain at least one digit"
+        ):
+            serializer.is_valid(raise_exception=True)
