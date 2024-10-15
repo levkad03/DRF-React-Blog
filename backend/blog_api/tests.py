@@ -61,12 +61,8 @@ class PostTests(APITestCase):
         # Use the correct URL for the post creation endpoint
         url = reverse("blog_api:createpost")
 
-        print(data)
-
         # Send the POST request with multipart form data
         response = self.client.post(url, data, format="multipart")
-
-        print(response.data)
 
         # Check if the post was created successfully
         self.assertEqual(response.status_code, status.HTTP_200_OK)
