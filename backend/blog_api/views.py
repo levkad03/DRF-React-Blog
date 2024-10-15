@@ -16,16 +16,6 @@ from blog.models import Post
 from .serializers import PostSerializer
 
 
-class PostUserWritePermission(BasePermission):
-    message = "Editing post is restricted to the author only."
-
-    def has_object_permission(self, request, view, obj):
-        if request.method in SAFE_METHODS:
-            return True
-
-        return obj.author == request.user
-
-
 class PostList(generics.ListAPIView):
     # authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -33,8 +23,9 @@ class PostList(generics.ListAPIView):
     queryset = Post.postobjects.all()
 
 
-class PostDetail(generics.RetrieveAPIView, PostUserWritePermission):
-    permission_classes = [PostUserWritePermission]
+class PostDetail(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     serializer_class = PostSerializer
     lookup_field = "slug"
 

@@ -25,6 +25,15 @@ class PostTests(APITestCase):
             password="123456789",
         )
 
+        self.post = Post.objects.create(
+            title="Original Post",
+            author=self.test_user1,
+            excerpt="Some excerpt",
+            content="Some content",
+            category=self.test_category,
+            slug="original-post",
+        )
+
     def get_token(self, user):
         """Helper function to get JWT token for a user"""
         refresh = RefreshToken.for_user(user)
