@@ -25,15 +25,6 @@ class PostTests(APITestCase):
             password="123456789",
         )
 
-        self.post = Post.objects.create(
-            title="Original Post",
-            author=self.test_user1,
-            excerpt="Some excerpt",
-            content="Some content",
-            category=self.test_category,
-            slug="original-post",
-        )
-
     def get_token(self, user):
         """Helper function to get JWT token for a user"""
         refresh = RefreshToken.for_user(user)
@@ -79,6 +70,11 @@ class PostTests(APITestCase):
 
         # Check if the post was created successfully
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Test invalid data
+        invalid_data = {"title": "", "content": "", "category": ""}
+        response = self.client.post(url, invalid_data, format="multipart")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         # Check if we can retrieve the created post
         root = reverse("blog_api:detailcreate", kwargs={"slug": "new"})
