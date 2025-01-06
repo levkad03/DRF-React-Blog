@@ -15,7 +15,7 @@ const Header = () => {
   let navigate = useNavigate();
   const [data, setData] = useState({ search: '' });
 
-  const goSearch = e => {
+  const goSearch = () => {
     navigate({ pathname: '/search/', search: `?search=${data.search}` });
     window.location.reload();
   };

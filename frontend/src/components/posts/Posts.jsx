@@ -41,7 +41,7 @@ const Posts = ({ posts }) => {
                     {post.title.substr(0, 50)}...
                   </Typography>
                   <div
-                    sx={{
+                    style={{
                       display: 'flex',
                       justifyContent: 'left',
                       alignItems: 'baseline',

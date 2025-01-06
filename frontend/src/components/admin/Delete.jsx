@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import axiosInstance from '../../Axios';
+import { axiosInstance } from '@/core/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { Container } from '@mui/material';

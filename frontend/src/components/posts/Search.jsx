@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axiosInstance from '../../Axios';
+import { axiosInstance } from '@/core/api';
 import { Card } from '@mui/material';
 import { CardContent } from '@mui/material';
 import { CardMedia } from '@mui/material';
@@ -7,7 +7,6 @@ import { Grid } from '@mui/material';
 import { Typography } from '@mui/material';
 import { Container } from '@mui/material';
 import { Link } from '@mui/material';
-import { useLocation } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 
 const Search = () => {

@@ -11,11 +11,9 @@ import { TableRow } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { Button } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { Box } from '@mui/material';
 
 const Posts = props => {
-  const theme = useTheme();
   const { posts } = props;
   if (!posts || posts.length === 0) return <p>Can not find any posts, sorry</p>;
   return (

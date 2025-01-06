@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { Posts } from './components/admin';
-import axiosInstance from './Axios';
+import { axiosInstance } from '@/core/api';
 import PostLoadingComponent from './components/posts/PostLoading';
 
 const Admin = () => {

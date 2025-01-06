@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { Posts } from './components/posts';
 import PostLoadingComponent from './components/posts/PostLoading';
 
-import axiosInstance from './Axios';
+import axiosInstance from './core/api/Axios';
 
 function App() {
   const PostLoading = PostLoadingComponent(Posts);
