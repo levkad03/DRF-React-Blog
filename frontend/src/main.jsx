@@ -14,24 +14,27 @@ import Admin from './Admin';
 import { Create } from './components/admin';
 import { Edit } from './components/admin';
 import { Delete } from './components/admin';
+import { UserProvider } from './core/context/UserContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>
     <React.StrictMode>
-      <Header />
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/logout" element={<Logout />} />
-        <Route path="/post/:slug" element={<Single />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/admin/create" element={<Create />} />
-        <Route path="admin/edit/:id" element={<Edit />} />
-        <Route path="admin/delete/:id" element={<Delete />} />
-      </Routes>
-      <Footer />
+      <UserProvider>
+        <Header />
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/post/:slug" element={<Single />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/create" element={<Create />} />
+          <Route path="admin/edit/:id" element={<Edit />} />
+          <Route path="admin/delete/:id" element={<Delete />} />
+        </Routes>
+        <Footer />
+      </UserProvider>
     </React.StrictMode>
   </Router>,
 );

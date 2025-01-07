@@ -1,6 +1,12 @@
 from django.urls import path
 
-from .views import BlacklistTokenView, CustomUserCreate, DeleteUserView, UpdateUserView
+from .views import (
+    BlacklistTokenView,
+    CustomUserCreate,
+    DeleteUserView,
+    UpdateUserView,
+    UserDetailView,
+)
 
 app_name = "users"
 
@@ -9,4 +15,5 @@ urlpatterns = [
     path("logout/blacklist/", BlacklistTokenView.as_view(), name="blacklist"),
     path("update/", UpdateUserView.as_view(), name="update_user"),
     path("delete/", DeleteUserView.as_view(), name="delete_user"),
+    path("userdetail/", UserDetailView.as_view(), name="user_detail"),
 ]

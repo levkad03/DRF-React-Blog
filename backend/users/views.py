@@ -7,7 +7,11 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import NewUser
-from .serializers import RegisterUserSerializer, UpdateProfileSerializer
+from .serializers import (
+    RegisterUserSerializer,
+    UpdateProfileSerializer,
+    UserDetailSerializer,
+)
 
 
 class CustomUserCreate(APIView):
@@ -66,3 +70,13 @@ class BlacklistTokenView(APIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserDetailSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)

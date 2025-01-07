@@ -62,3 +62,9 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
         if user.user_name == value:
             raise serializers.ValidationError("Username is the same as the old one")
         return value
+
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NewUser
+        fields = ["email", "user_name"]

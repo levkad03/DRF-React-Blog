@@ -12,9 +12,11 @@ import { Grid } from '@mui/material';
 import { Typography } from '@mui/material';
 import { Container } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useUser } from '@/core/context/UserContext';
 
 export default function Login() {
   const navigate = useNavigate();
+  const { login } = useUser();
   const initialFormData = Object.freeze({
     email: '',
     password: '',
@@ -29,7 +31,6 @@ export default function Login() {
   };
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(formData);
 
     axiosInstance
       .post(`token/`, {
@@ -41,7 +42,18 @@ export default function Login() {
         localStorage.setItem('refresh_token', res.data.refresh);
         axiosInstance.defaults.headers['Authorization'] =
           'Bearer ' + localStorage.getItem('access_token');
+
+        return axiosInstance.get('user/userdetail/');
+      })
+      .then(userResponse => {
+        // Теперь у нас есть реальные данные пользователя
+        console.log('User data received:', userResponse.data);
+        login(userResponse.data);
         navigate('/');
+      })
+      .catch(error => {
+        console.error('Error during login:', error);
+        // Здесь можно добавить обработку ошибок, например показать уведомление
       });
   };
   const theme = useTheme();
