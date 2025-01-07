@@ -9,15 +9,31 @@ import { NavLink } from 'react-router-dom';
 import { Button } from '@mui/material';
 import SearchBar from '@mkyy/mui-search-bar';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '@/core/context/UserContext';
+import { Avatar, Menu, MenuItem } from '@mui/material';
 
 const Header = () => {
   const theme = useTheme();
   let navigate = useNavigate();
+  const { user } = useUser();
   const [data, setData] = useState({ search: '' });
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleAvatarClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleAvatarClose = () => {
+    setAnchorEl(null);
+  };
 
   const goSearch = () => {
     navigate({ pathname: '/search/', search: `?search=${data.search}` });
     window.location.reload();
+  };
+
+  const handleLogout = () => {
+    navigate('/logout');
   };
 
   return (
@@ -43,43 +59,50 @@ const Header = () => {
             onChange={newValue => setData({ search: newValue })}
             onSearch={() => goSearch(data.search)}
           />
-          <nav>
-            <Link
-              color="textPrimary"
-              href="#"
-              sx={{
-                margin: theme.spacing(1, 1.5),
-              }}
-              component={NavLink}
-              to="/register"
-            >
-              Register
-            </Link>
-          </nav>
-          <Button
-            href="#"
-            color="primary"
-            variant="outlined"
-            sx={{
-              margin: theme.spacing(1, 1.5),
-            }}
-            component={NavLink}
-            to="/login"
-          >
-            Log in
-          </Button>
-          <Button
-            href="#"
-            color="primary"
-            variant="outlined"
-            sx={{
-              margin: theme.spacing(1, 1.5),
-            }}
-            component={NavLink}
-            to="/logout"
-          >
-            Logout
-          </Button>
+          {!user ? (
+            <React.Fragment>
+              <nav>
+                <Link
+                  color="textPrimary"
+                  sx={{
+                    margin: theme.spacing(1, 1.5),
+                  }}
+                  component={NavLink}
+                  to="/register"
+                >
+                  Register
+                </Link>
+              </nav>
+              <Button
+                color="primary"
+                variant="outlined"
+                sx={{
+                  margin: theme.spacing(1, 1.5),
+                }}
+                component={NavLink}
+                to="/login"
+              >
+                Log in
+              </Button>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Avatar
+                sx={{ cursor: 'pointer', marginLeft: theme.spacing(1) }}
+                onClick={handleAvatarClick}
+              >
+                {user.user_name[0]} {/* Отображаем первую букву имени пользователя */}
+              </Avatar>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleAvatarClose}
+              >
+                <MenuItem onClick={() => navigate('/admin')}>Admin Panel</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </React.Fragment>
+          )}
         </Toolbar>
       </AppBar>
     </React.Fragment>
